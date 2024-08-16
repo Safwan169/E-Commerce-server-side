@@ -29,12 +29,26 @@ const database=client.db("E-Commerce")
 const data_Product=database.collection("Product-data")
 
     app.get('/product',async(req,res)=>{
+        const name=req.body.name;
+        // console.log(name)
 
+        if(name){
+
+          const query = { title: `${name}` };
+          
+          const cursor=await data_Product.findOne(query)
+
+          // const result= await cursor.toArray()
+        return  res.send(cursor)
+        }
+      else{
         const cursor=data_Product.find()
         const result= await cursor.toArray()
-        res.send(result)
+      return  res.send(result)
+      }
 
     })
+ 
 
 
 
