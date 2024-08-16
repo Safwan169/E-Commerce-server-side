@@ -28,12 +28,12 @@ async function run() {
 const database=client.db("E-Commerce")
 const data_Product=database.collection("Product-data")
 
-    app.get('/product',async(req,res)=>{
+    app.post('/product',async (req,res)=>{
         const name=req.body.name;
         const brand=req.body.brand;
-        const Category =req.body.catagory;
+        const Category =req.body.category;
         const price=req.body.price;
-        // console.log(name)
+        console.log(name)
 
         if(name){
 
