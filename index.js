@@ -30,6 +30,9 @@ const data_Product=database.collection("Product-data")
 
     app.get('/product',async(req,res)=>{
         const name=req.body.name;
+        const brand=req.body.brand;
+        const Category =req.body.catagory;
+        const price=req.body.price;
         // console.log(name)
 
         if(name){
@@ -41,11 +44,27 @@ const data_Product=database.collection("Product-data")
           // const result= await cursor.toArray()
         return  res.send(cursor)
         }
-      else{
-        const cursor=data_Product.find()
-        const result= await cursor.toArray()
-      return  res.send(result)
-      }
+
+        else if (condition) {
+
+          
+          const query = { 
+             $or: [
+            { brand: brand },
+            { price: price },
+            { Category : Category  }
+          ] };
+          
+          const cursor= data_Product.find(query)
+          const result= await cursor.toArray()
+        return  res.send(result)
+        } 
+        
+        else{
+          const cursor=data_Product.find()
+          const result= await cursor.toArray()
+        return  res.send(result)
+        }
 
     })
  
