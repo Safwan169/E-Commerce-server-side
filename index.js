@@ -45,7 +45,7 @@ const data_Product=database.collection("Product-data")
         return  res.send(cursor)
         }
 
-        else if (condition) {
+        else if (brand|| Category||price) {
 
           
           const query = { 
