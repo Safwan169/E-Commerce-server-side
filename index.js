@@ -5,8 +5,14 @@ const port = process.env.PORT || 5000
 require('dotenv').config()
 const cors = require('cors')
 app.use(express.json())
-app.use(cors())
+app.use(cors(
+  {
+    origin: ["http://localhost:5174", "http://localhost:5173", ""],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    credentials: true
+  }
 
+));
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const json = require('body-parser/lib/types/json')
