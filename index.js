@@ -29,17 +29,17 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-   
+
 
     const database = client.db("E-Commerce")
     const data_Product = database.collection("Product-data")
 
-app.post('/products',async(req,res)=>{
-  const cursor = data_Product.find()
-  const result = await cursor.toArray()
-  return res.send(result)
+    app.post('/products', async (req, res) => {
+      const cursor = data_Product.find()
+      const result = await cursor.toArray()
+      return res.send(result)
 
-})
+    })
 
     app.post('/product', async (req, res) => {
       const name = req.body.name;
@@ -56,17 +56,17 @@ app.post('/products',async(req,res)=>{
           return res.send([cursor])
 
 
-        }else{
+        } else {
           return res.send([])
         }
-        
+
       }
 
       else if (brand || Category || price) {
-      
 
 
-       
+
+
 
         const cursor = data_Product.find(query)
         const result = await cursor.toArray()
@@ -83,22 +83,21 @@ app.post('/products',async(req,res)=>{
 
 
 
-app.post('/all',async (req,res)=>{
+    app.post('/all', async (req, res) => {
 
-  const data=parseInt(req.query.size)
-  const cursor = data_Product.find()
-  .skip(data*parseInt(8))
-  .limit(parseInt(8))
-  const result = await cursor.toArray()
-  return res.send(result)
+      const data = parseInt(req.query.size)
+      const cursor = data_Product.find()
+        .skip(data * parseInt(8))
+        .limit(parseInt(8))
+      const result = await cursor.toArray()
+      return res.send(result)
+// for all data searchData
 
-
-})
+    })
 
 
   } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
+
   }
 }
 run().catch(console.dir);
