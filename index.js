@@ -94,6 +94,49 @@ async function run() {
 // for all data searchData
 
     })
+// app.post('/dd',async(req,res)=>{
+//   const max=req.query.max
+//   const min=req.query.min
+//   console.log(max,min)
+
+
+// })
+
+app.post('/dd', async (req, res) => {
+  try {
+      const { brand, category, price } = req.query;
+      console.log(brand)
+
+      // Construct the query object dynamically
+      const query = {};
+
+      if (brand!=='undefined') {
+          query.brand = brand;
+
+      }
+
+      if (category!=='undefined') {
+          query.category = category;
+      }
+console.log(query)
+      // if (price) {
+      //     query.price = { $lte: parseFloat(price) }; // Example: get items with price <= specified value
+      // }
+
+      const collection = database.collection('Product-data'); // Replace with your collection name
+      const items = await data_Product
+          .find(query)          // Apply the dynamic query
+          .toArray();          // Convert to array
+
+      if (items.length === 0) {
+          res.status(404).json({ message: 'No data found' });
+      } else {
+          res.status(200).json(items);
+      }
+  } catch (error) {
+      res.status(500).json({ error: 'An error occurred' });
+  }
+});
 
 
   } finally {
