@@ -7,7 +7,7 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cors(
   {
-    origin: ["http://localhost:5174", "http://localhost:5173", ""],
+    origin: ["http://localhost:5174", "http://localhost:5173", "https://66c0a7cfb5731c764acdbf6f--sprightly-souffle-88158d.netlify.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true
   }
