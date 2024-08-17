@@ -29,8 +29,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+   
 
     const database = client.db("E-Commerce")
     const data_Product = database.collection("Product-data")
@@ -47,7 +46,6 @@ app.post('/products',async(req,res)=>{
       const brand = req.body.brand;
       const Category = req.body.category;
       const price = req.body.price;
-      // console.log(brand)
 
       if (name) {
 
@@ -61,7 +59,7 @@ app.post('/products',async(req,res)=>{
         }else{
           return res.send([])
         }
-        // const result= await cursor.toArray()
+        
       }
 
       else if (brand || Category || price) {
