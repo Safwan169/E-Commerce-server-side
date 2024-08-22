@@ -7,9 +7,8 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cors(
   {
-    origin: ["http://localhost:5174", "http://localhost:5173", "https://66c0a7cfb5731c764acdbf6f--sprightly-souffle-88158d.netlify.app"],
+    origin: ["http://localhost:5174", "http://localhost:5173", "https://safwan-commrerce.netlify.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    credentials: true
   }
 
 ));
@@ -42,22 +41,19 @@ async function run() {
     })
 
     app.post('/product', async (req, res) => {
-      const name = req.body.name;
-      const brand = req.body.brand;
-      const Category = req.body.category;
-      const price = req.body.price;
+      const name = req.body;
 
-      if (name) {
+      if (name?.search&&name?.search!=='undefined') {
 
-        const query = { title: `${name}` };
+        let query = { title: `${name?.search}` };
 
-        const cursor = await data_Product.findOne(query)
+        const cursor = await data_Product?.findOne(query)
         if (cursor) {
-          return res.send([cursor])
+          return res?.send([cursor])
 
 
         } else {
-          return res.send([])
+          return res?.send([])
         }
 
       }
@@ -86,47 +82,42 @@ async function run() {
           if (category!=='undefined') {
               query.category = category;
           }
-    console.log(query)
-          // if (price) {
-          //     query.price = { $lte: parseFloat(price) }; // Example: get items with price <= specified value
-          // }
-    
-          const collection = database.collection('Product-data'); // Replace with your collection name
+
+         
           const items = await data_Product
-              .find(query)          // Apply the dynamic query
-              .toArray();          // Convert to array
+              .find(query)         
+              .toArray();          
     
           if (items.length === 0) {
-              res.status(404).json({ message: 'No data found' });
+              // res.status(404).json({ message: 'No data found' });
           } else if( category!=='undefined' || brand!=="undefined") {
 
 
               res.status(200).json(items);
           }
       } catch (error) {
-          res.status(500).json({ error: 'An error occurred' });
+          // res.status(500).json({ error: 'An error occurred' });
       }
     });
 
+// for all data searchData
 
     app.post('/all', async (req, res) => {
 
       const data = parseInt(req.query.size)
-      const cursor = data_Product.find()
+      const price = req.query.price
+      console.log(price,req.query)
+
+      let sortOrder = {};
+      if ( price!=='undefined') sortOrder.price = price === 'low' ? 1 : -1;
+      const cursor = data_Product.find().sort(sortOrder)
         .skip(data * parseInt(8))
         .limit(parseInt(8))
       const result = await cursor.toArray()
       return res.send(result)
-// for all data searchData
 
     })
-// app.post('/dd',async(req,res)=>{
-//   const max=req.query.max
-//   const min=req.query.min
-//   console.log(max,min)
 
-
-// })
 
 
 
