@@ -13,7 +13,7 @@ app.use(cors(
 
 ));
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const json = require('body-parser/lib/types/json')
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.6zehkma.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -43,7 +43,7 @@ async function run() {
     app.post('/product', async (req, res) => {
       const name = req.body;
 
-      if (name?.search&&name?.search!=='undefined') {
+      if (name?.search && name?.search !== 'undefined') {
 
         let query = { title: `${name?.search}` };
 
@@ -66,50 +66,64 @@ async function run() {
       }
 
     })
+
+    // for details 
+    app.get('/details/:id', async (req, res) => {
+      const data = req.params.id
+
+      const query = { _id:  new ObjectId (data) };
+      const cursor = await data_Product?.findOne(query)
+
+      return res.send(cursor)
+
+
+    })
+
+
     app.post('/dd', async (req, res) => {
       try {
-          const { brand, category, price } = req.query;
-          console.log(brand)
-    
-          // Construct the query object dynamically
-          const query = {};
-    
-          if (brand!=='undefined') {
-              query.brand = brand;
-    
-          }
-    
-          if (category!=='undefined') {
-              query.category = category;
-          }
+        const { brand, category, price } = req.query;
+        console.log(brand)
 
-         
-          const items = await data_Product
-              .find(query)         
-              .toArray();          
-    
-          if (items.length === 0) {
-              // res.status(404).json({ message: 'No data found' });
-          } else if( category!=='undefined' || brand!=="undefined") {
+        // Construct the query object dynamically
+        const query = {};
+
+        if (brand !== 'undefined') {
+          query.brand = brand;
+
+        }
+
+        if (category !== 'undefined') {
+          query.category = category;
+        }
 
 
-              res.status(200).json(items);
-          }
+        const items = await data_Product
+          .find(query)
+          .toArray();
+
+        if (items.length === 0) {
+          // res.status(404).json({ message: 'No data found' });
+        } else if (category !== 'undefined' || brand !== "undefined") {
+
+
+          res.status(200).json(items);
+        }
       } catch (error) {
-          // res.status(500).json({ error: 'An error occurred' });
+        // res.status(500).json({ error: 'An error occurred' });
       }
     });
 
-// for all data searchData
+    // for all data searchData
 
     app.post('/all', async (req, res) => {
 
       const data = parseInt(req.query.size)
       const price = req.query.price
-      console.log(price,req.query)
+      console.log(price, req.query)
 
       let sortOrder = {};
-      if ( price!=='undefined') sortOrder.price = price === 'low' ? 1 : -1;
+      if (price !== 'undefined') sortOrder.price = price === 'low' ? 1 : -1;
       const cursor = data_Product.find().sort(sortOrder)
         .skip(data * parseInt(8))
         .limit(parseInt(8))
