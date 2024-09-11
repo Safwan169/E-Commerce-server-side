@@ -107,7 +107,7 @@ async function run() {
         
       }
 
-        const result = await cart_data.insertOne(data);
+       else{ const result = await cart_data.insertOne(data);}
     
 
 
