@@ -32,6 +32,7 @@ async function run() {
 
     const database = client.db("E-Commerce")
     const data_Product = database.collection("Product-data")
+    const cart_data = database.collection("cart-data")
 
     app.post('/products', async (req, res) => {
       const cursor = data_Product.find()
@@ -75,6 +76,42 @@ async function run() {
       const cursor = await data_Product?.findOne(query)
 
       return res.send(cursor)
+
+
+    })
+
+
+
+    // add data in cart 
+    app.post('/cart',async(req,res)=>{
+      const data=req.body
+
+      // console.log(data)
+      const filter={
+        id:data?.id
+      }
+      const updateDoc={
+        $inc: { quantity: 1 }
+      }
+
+      const findOneData=await cart_data.findOne({id:data?.id})
+      console.log(findOneData,'finddadta')
+
+      if (findOneData ||!findOneData==undefined) {
+
+      
+
+       const result= await cart_data.updateOne(filter,updateDoc)
+
+       console.log(result,'find')
+        
+      }
+
+        const result = await cart_data.insertOne(data);
+    
+
+
+
 
 
     })
