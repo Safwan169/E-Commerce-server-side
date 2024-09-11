@@ -95,7 +95,6 @@ async function run() {
       }
 
       const findOneData=await cart_data.findOne({id:data?.id})
-      console.log(findOneData,'finddadta')
 
       if (findOneData ||!findOneData==undefined) {
 
@@ -103,7 +102,6 @@ async function run() {
 
        const result= await cart_data.updateOne(filter,updateDoc)
 
-       console.log(result,'find')
         
       }
 
@@ -114,6 +112,13 @@ async function run() {
 
 
 
+    })
+
+
+    // get cart data 
+    app.get('/cart',async(req,res)=>{
+      const data =req.body
+      console.log(data)
     })
 
 
