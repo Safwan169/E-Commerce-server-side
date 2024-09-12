@@ -117,15 +117,24 @@ async function run() {
 
     // get cart data 
     app.get('/cart',async(req,res)=>{
-      const data =req.body
-      console.log(data)
+      const data =req.query.email
+      console.log(data,'data')
+
+      const cursor= cart_data?.find({email:data})
+      const result=await cursor.toArray()
+
+      console.log(result)
+
+      res.send(result)
+
+
     })
 
 
     app.post('/dd', async (req, res) => {
       try {
         const { brand, category, price } = req.query;
-        console.log(brand)
+        // console.log(brand)
 
         // Construct the query object dynamically
         const query = {};
