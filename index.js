@@ -88,6 +88,7 @@ async function run() {
 
       // console.log(data)
       const filter={
+        email:data?.email,
 
         id:data?.id
       }
@@ -96,8 +97,9 @@ async function run() {
       }
 
       const findOneData=await cart_data.findOne({
-        email:data?.id,
+      
         id:data?.id})
+  
 
       if (findOneData ||!findOneData==undefined) {
 
@@ -128,7 +130,10 @@ async function run() {
 
     const data=req.body
 
+
     const filter={
+
+      email:data?.email,
       id:data?.id
     }
     const updateDoc={
@@ -149,6 +154,7 @@ async function run() {
     const data=req.body
 
     const filter={
+      email:data?.email,
       id:data?.id
     }
     const updateDoc={
@@ -166,12 +172,12 @@ res.send(request)
     // get cart data 
     app.get('/cart',async(req,res)=>{
       const data =req.query.email
-      console.log(data,'data')
+      // console.log(data,'data')
 
       const cursor= cart_data?.find({email:data})
       const result=await cursor.toArray()
 
-      console.log(result)
+      // console.log(result)
 
       res.send(result)
 
@@ -219,7 +225,7 @@ res.send(request)
 
       const data = parseInt(req.query.size)
       const price = req.query.price
-      console.log(price, req.query)
+      // console.log(price, req.query)
 
       let sortOrder = {};
       if (price !== 'undefined') sortOrder.price = price === 'low' ? 1 : -1;
