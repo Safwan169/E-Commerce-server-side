@@ -82,19 +82,22 @@ async function run() {
 
 
 
-    // add data in cart 
+    // add data in cart and also increment quantity 
     app.post('/cart',async(req,res)=>{
       const data=req.body
 
       // console.log(data)
       const filter={
+
         id:data?.id
       }
       const updateDoc={
         $inc: { quantity: 1 }
       }
 
-      const findOneData=await cart_data.findOne({id:data?.id})
+      const findOneData=await cart_data.findOne({
+        email:data?.id,
+        id:data?.id})
 
       if (findOneData ||!findOneData==undefined) {
 
@@ -102,10 +105,16 @@ async function run() {
 
        const result= await cart_data.updateOne(filter,updateDoc)
 
+       res.send(result)
+
         
       }
 
-       else{ const result = await cart_data.insertOne(data);}
+       else{ const result = await cart_data.insertOne(data);
+
+       res.send(result)
+
+       }
     
 
 
@@ -113,6 +122,45 @@ async function run() {
 
 
     })
+
+  // cart quantity increment 
+  app.post('/cartInc',async(req,res)=>{
+
+    const data=req.body
+
+    const filter={
+      id:data?.id
+    }
+    const updateDoc={
+      $inc:{
+        quantity: 1
+      }
+    }
+
+      const request= await cart_data.updateOne(filter,updateDoc)
+
+      res.send(request)
+
+
+  })
+  // cart quantity Decrement 
+  app.post('/cartDec',async(req,res)=>{
+
+    const data=req.body
+
+    const filter={
+      id:data?.id
+    }
+    const updateDoc={
+      $inc:{
+        quantity: -1
+      }
+    }
+
+      const request= await cart_data.updateOne(filter,updateDoc)
+res.send(request)
+
+  })
 
 
     // get cart data 
