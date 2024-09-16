@@ -96,9 +96,9 @@ async function run() {
         $inc: { quantity: 1 }
       }
 
-      const findOneData=await cart_data.findOne({
-      
-        id:data?.id})
+      const findOneData=await cart_data.findOne({email:data?.email,id:data?.id})
+
+      console.log(data.email,findOneData)
   
 
       if (findOneData ||!findOneData==undefined) {
